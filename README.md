@@ -6,7 +6,6 @@
 - **Only Sam** can reboot crashed servers → Analysts wait hours for simple fixes
 - **Only Sam** can create new servers → Project delays when new instances needed
 - **Only Sam** can troubleshoot server issues → Bottleneck for multiple analysts across multiple projects
-- **Business Impact:** Downtime costs money, delayed projects
 
 ### What We Want to Achieve
 - **Analysts can reboot** their own crashed servers immediately
@@ -43,6 +42,34 @@
 ✅ **Troubleshoot** basic server issues  
 ✅ **Cannot** delete servers (safety measure)  
 ✅ **Cannot** access other AWS services (cost protection)
+
+## Delegation Option: Let a Trusted Analyst Do This Setup
+
+### Option A: Sam Does Everything (Default)
+Follow the steps below as Sam with admin access.
+
+### Option B: Delegate to Trusted Analyst (Recommended)
+
+**Why delegate?** Sam focuses on strategic work while trusted analyst handles team setup.
+
+#### Quick Delegation Steps (Sam - 5 minutes)
+1. **Choose your most trusted analyst** (e.g., senior team member)
+2. **Go to IAM → Users → Create User**
+3. **Username:** `setup-admin-[name]` (e.g., `setup-admin-john`)
+4. **Enable Console Access** with strong password
+5. **Go to IAM → Users → [new user] → Permissions → Add permissions**
+6. **Attach existing policies:** `IAMFullAccess` 
+7. **Send credentials** to trusted analyst
+8. **Tell them:** "Follow the setup guide below, then we'll remove your admin access"
+
+#### After Setup Completion (Sam - 2 minutes)
+1. **Verify everything works** with test analyst account
+2. **Go to IAM → Users → [setup-admin] → Permissions**
+3. **Remove `IAMFullAccess` policy** (revoke admin rights)
+4. **Add them to `AnalystGroup`** like everyone else
+5. **Done!** Trusted analyst now has normal analyst permissions
+
+---
 
 ## Step-by-Step Implementation
 
@@ -192,6 +219,8 @@
 - **Project-specific permissions** - different access levels per analyst
 - **Advanced monitoring** - detailed usage reports
 - **Cost allocation** - track spending per project
+
+## Emergency Procedures
 
 ### Rollback Plan
 1. **Remove analysts from group** - immediate access removal
